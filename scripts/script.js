@@ -1,11 +1,6 @@
-function add(a, b) {
-  return a + b;
+function exponent(a, b) {
+  return a ** b;
 }
-
-function subtract(a, b) {
-  return a - b;
-}
-
 function multiply(a, b) {
   return a * b;
 }
@@ -14,8 +9,18 @@ function divide(a, b) {
   return a / b;
 }
 
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
 function operate(a, operator, b) {
-  if (operator === '+') {
+  if (operator === '**') {
+    return exponent(a, b);
+  } else if (operator === '+') {
     return add(a, b);
   } else if (operator === '-') {
     return subtract(a, b);
@@ -84,15 +89,31 @@ function updateDisplay(event) {
 
 function multiplyAndDivide(operation) {
   const pendingOperators = operator => {
-    return operator === '*' || operator === '/' ||
+    return operator === '**' || operator === '*' || operator === '/' ||
       operator === '+' || operator === '-';
   };
   const hasSubOperations = operand => {
     return typeof operand !== "number";
   };
+  const operatorPriority = [
+    ['**'],
+    ['*', '/'],
+    ['+', '-']
+  ];
+  const getOperatorsInOrder = () => {
+    let index = 0;
+    for (let i = 0; i < operatorPriority.length; i++) {
+      index = operation.operators.findIndex(operator => {
+        return operatorPriority[i].includes(operator);
+      });
+      if (index >= 0) return index;
+    }
+    return index;
+  }
+
   while (operation.operators.some(pendingOperators) ||
     operation.operands.some(hasSubOperations)) {
-    let index = operation.operators.findIndex(pendingOperators);
+    let index = getOperatorsInOrder();
     if (index < 0) {
       index = 0;
     }
