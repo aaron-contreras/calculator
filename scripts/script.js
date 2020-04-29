@@ -10,7 +10,7 @@ function divide(a, b) {
 }
 
 function add(a, b) {
-  return a + b;
+  return +a + +b;
 }
 
 function subtract(a, b) {
@@ -87,13 +87,54 @@ function updateDisplay(event) {
   console.table(listOfOperations);
 }
 
+function missingParentheses(openParentheses, closeParentheses) {
+  return openParentheses === -1 && closeParentheses !== -1 ||
+      openParentheses !== -1 && closeParentheses === -1;
+}
+
+function noParentheses(openParentheses, closeParentheses) {
+  return openParentheses === -1 && closeParentheses === -1;
+}
+
+function splitOperations(string) {
+  const parentheses = /\([d]*|[d]*\)/g;
+  const arr = string.split('');
+  const operatorList = ['(', ')', '**', '*', '/', '+', '-'];
+  const isOperatorOrOperation = element => operatorList.includes(element);
+  while (arr.some(isOperatorOrOperation)) {
+    const lastOpenParentheses = arr.lastIndexOf('(');
+    const firstCloseParentheses = arr.indexOf(')');
+    if (missingParentheses(lastOpenParentheses, firstCloseParentheses)) {
+      return "Fix unmatching brackets";
+    }
+    const distance = firstCloseParentheses - lastOpenParentheses + 1;
+    let listOfElementsToSolve = arr.slice(
+      lastOpenParentheses + 1,
+      firstCloseParentheses);
+      if (noParentheses(lastOpenParentheses, firstCloseParentheses)) {
+        listOfElementsToSolve = arr;
+      }
+    const operation = {
+      operands: listOfElementsToSolve
+        .filter(element => +element === +element),
+      operators: listOfElementsToSolve
+        .filter(element => isNaN(+element))
+    };
+    if (noParentheses(lastOpenParentheses, firstCloseParentheses)) {
+      return multiplyAndDivide(operation);
+    }
+    console.log(operation);
+    arr.splice(lastOpenParentheses, distance, multiplyAndDivide(operation));
+    
+    console.log(arr);
+  }
+  return arr;
+}
+
 function multiplyAndDivide(operation) {
   const pendingOperators = operator => {
     return operator === '**' || operator === '*' || operator === '/' ||
       operator === '+' || operator === '-';
-  };
-  const hasSubOperations = operand => {
-    return typeof operand !== "number";
   };
   const operatorPriority = [
     ['**'],
@@ -106,34 +147,24 @@ function multiplyAndDivide(operation) {
       index = operation.operators.findIndex(operator => {
         return operatorPriority[i].includes(operator);
       });
-      if (index >= 0) return index;
+      if (index >= 0) {
+        return index;
+      }
     }
-    return index;
   }
 
-  while (operation.operators.some(pendingOperators) ||
-    operation.operands.some(hasSubOperations)) {
+  while (operation.operators.some(pendingOperators)) {
     let index = getOperatorsInOrder();
-    if (index < 0) {
-      index = 0;
-    }
+    console.log(index);
     const operator = operation.operators[index];
-    const a = typeof operation.operands[index] === 'number' ?
-      operation.operands[index] :
-      operation.operands[index] = multiplyAndDivide(operation.operands[index]);
-      let b = 0;
-      if (operation.operands.length < 2) {
-        return operation.operands[0];
-      }
-      b = typeof operation.operands[index + 1] === 'number' ?
-        operation.operands[index + 1] :
-        operation.operands[index + 1] = multiplyAndDivide(operation.operands[index + 1]);
-
+    const a = operation.operands[index];
+    const b = operation.operands[index + 1];
     const result = operate(a, operator, b);
 
     operation.operands.splice(index, 2, result);
     operation.operators.splice(index, 1);
   }
+  console.log(operation.operands[0]);
   return operation.operands[0];
 }
 function solve() {
