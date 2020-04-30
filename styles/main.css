@@ -1,23 +1,61 @@
 :root {
-  --dimensions: 80vw;
-  --min-dimensions: 300px;
+  --dimensions: 50vw;
+  --min-dimensions: 250px;
   --max-dimensions: 600px;
-  --border-color: #272838;
-  --highlight-color: #6DD3CE;
+  --border-color: #171219;
+  --highlight-color: #44E5E7;
+  --highlight-font: black;
   --secondary-color: #C0FDFB;
   --border: 2px solid black;
 }
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
   font-size: 22px;
   background-color: #FCFCFC;
   margin: 0;
 }
-main {
-  min-height: 100vh;
+.copied-banner {
+  height: 50px;
+  background-color: var(--highlight-color); 
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--highlight-font);
+  visibility: hidden;
+  opacity: 0;
+  
+}
+.copied-banner-anim {
+  
+  animation-name: show-banner;
+  animation-duration: 2s;
+}
+@keyframes show-banner {
+  0% {
+    visibility: visible;
+  }
+  5% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    visibility: visible;
+  }
+}
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+main p {
+  width: 90vw;
 }
 #calc-container {
   display: grid;
@@ -26,31 +64,34 @@ main {
   grid-gap: 1px;
   box-sizing: border-box;
   width: var(--dimensions);
-  height: 80vh;
+  height: 60vh;
   min-width: var(--min-dimensions);
   min-height: var(--min-dimensions);
   max-width: var(--max-dimensions);
   max-height: var(--max-dimensions);
+  color: #d3d3d6;
 }
 button {
   background-color: var(--border-color);
   border: none;
-  color: white;
   font-size: inherit;
   font-family: inherit;
   transition: 0.2s;
   outline: none;
+  color: inherit;
 }
-button:hover, button:focus {
-  transform: scale(1.1);
-  background-color: gray;
+button:hover {
+  transform: scale(1.05);
+  background-color: white;
 }
 button:active {
   background-color: white;
   color: black;
 }
 button.equals {
-  background-color: #F7567C;
+  background-color: var(--highlight-color); 
+  font-size: 2em;
+  color: rgba(0,0,0,0.8);
 }
 .utility-wrapper {
   display: flex;
@@ -66,7 +107,7 @@ button.equals {
   grid-column: span 2;
 }
 .display {
-  color: white;
+  color: rgba(255,255,255,0.8);
   grid-column: 1 / -1;
   grid-row: span 3;
   display: flex;
@@ -74,18 +115,17 @@ button.equals {
   justify-content: space-between;
   align-items: flex-end;
   font-size: 2em;
+  cursor: pointer;
 }
 .backlog {
   flex: 3;
   background-color: #000000;
+  font-weight: 300;
 }
 .result {
   flex: 2;
-  border-top: 1px solid rgba(255,255,255,0.5);
+  border-top: 3px solid rgba(255,255,255,0.25);
   background-color: #000000;
-}
-
-.result p {
   font-weight: 600;
 }
 .display div {
@@ -102,8 +142,34 @@ button.equals {
   word-wrap: break-word;
   text-align: right;
   margin: 0 15px 0 0;
+  transition: 0.1s;
 }
 
 .backlog p {
   font-size: 0.60em;
 }
+div .hovered-display {
+  color: var(--highlight-color);
+}
+footer {
+  height: 50px;
+  background-color: rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+}
+a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #444;
+  transition: 0.1s;
+}
+main a {
+  margin: 0;
+  font-weight: bold;
+}
+a:hover {
+  display: inline-block;
+  transform: scale(1.05);
+  color: black;
+}
+

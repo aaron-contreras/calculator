@@ -24,14 +24,14 @@ const validOperators = {
     if (+b === 0) {
       return divisionByZeroMessage;
     }
-    return  a / b;
+    return a / b;
   },
   '+': (a, b) => +a + +b,
   '-': (a, b) => a - b
 }
 
 function operate(a, operator, b) {
-  return validOperators[operator](a, b); 
+  return validOperators[operator](a, b);
 }
 const nonOperators = document.querySelectorAll('.non-operator');
 nonOperators.forEach(button => {
@@ -40,17 +40,43 @@ nonOperators.forEach(button => {
 
 let operation = '';
 let result = '';
+const fixBracketsMessage = "Add missing parentheses";
 function updateDisplay(event) {
+  function showErrorMessage() {
+    resultDisplay.style.fontSize = '16px';
+    resultDisplay.textContent = result;
+    result = operation;
+    backlogDisplay.textContent = operation;
+  }
   if (event.target.nodeName.toLowerCase() === 'button') {
     if (event.target.className.includes('clear')) {
-      operation = ''; 
+      resultDisplay.style.fontSize = '';
+      operation = '';
+      result = '';
       resultDisplay.textContent = '0';
       backlogDisplay.textContent = '';
-      result = '';
       return;
     }
+
     if (event.target.className === 'equals') {
       result = calculateResult(operation);
+      console.log(result);
+      if (typeof result == "string") {
+        showErrorMessage();
+        return;
+      } else if (isNaN(result)) {
+        showErrorMessage();
+        resultDisplay.textContent = 'Check your operation again.';
+        return;
+      }
+      else {
+        resultDisplay.style.fontSize = '';
+      }
+
+      if (typeof result === "object") {
+        return;
+
+      }
       if (result !== Math.trunc(result)) {
         result = result.toFixed(5);
       }
@@ -61,7 +87,13 @@ function updateDisplay(event) {
     }
     if (event.target.className.includes('delete')) {
       operation = operation.slice(0, operation.length - 1);
-      result = result.slice(0, result.length - 1); 
+      resultDisplay.style.fontSize = '';
+      if (result === divisionByZeroMessage) {
+        result = operation;
+        resultDisplay.textContent = result;
+        return;
+      }
+      result = result.slice(0, result.length - 1);
       resultDisplay.textContent = operation;
       return;
     }
@@ -69,6 +101,8 @@ function updateDisplay(event) {
     operation += event.target.getAttribute('data-symbol');
     result += event.target.getAttribute('data-symbol');
     resultDisplay.textContent = result;
+  } else {
+    copyToClipboard(event.target);
   }
 }
 
@@ -113,10 +147,25 @@ const nonOperands = ['(', ')',
 ];
 
 const isNonOperand = element => nonOperands.includes(element);
-
+function hasMoreThanOneDecimalPoint(operation) {
+  let previous = null;
+  let hasMoreThanOneDecimal = false;
+  operation.forEach(element => {
+    if (previous) {
+      if (typeof previous === "number" && typeof element === "number") {
+        hasMoreThanOneDecimal = true;
+        return;
+      }
+    }
+    previous = element;
+  });
+  return hasMoreThanOneDecimal;
+}
 function calculateResult(stringOperation) {
   const operation = cleanOperation(stringOperation);
-  console.log(operation);
+  if (hasMoreThanOneDecimalPoint(operation)) {
+    return 'Invalid number of decimal points';
+  }
   while (operation.some(isNonOperand)) {
     const parens = {
       lastOpen: operation.lastIndexOf('('),
@@ -124,7 +173,7 @@ function calculateResult(stringOperation) {
     }
 
     if (missingParentheses(parens)) {
-      return "Fix unmatching brackets";
+      return fixBracketsMessage;
     }
 
     if (isLastOperation(parens)) {
@@ -168,6 +217,9 @@ function solve(operation) {
     const operator = operation.operators[index];
     const a = operation.operands[index];
     const b = operation.operands[index + 1];
+    if (!b && (operator === '+' || operator === '-')) {
+      return +(operator + a);
+    }
     const result = operate(a, operator, b);
     if (result === divisionByZeroMessage) {
       return result;
@@ -178,7 +230,30 @@ function solve(operation) {
   return operation.operands[0];
 }
 
+
 const resultDisplay = document.querySelector('.result p');
 const backlogDisplay = document.querySelector('.backlog p');
 const calculator = document.querySelector('#calc-container');
 calculator.addEventListener('click', updateDisplay);
+
+const display = document.querySelector('.display');
+resultDisplay.parentElement.addEventListener('mouseover', growText);
+resultDisplay.parentElement.addEventListener('mouseout', growText);
+backlogDisplay.parentElement.addEventListener('mouseover', growText);
+backlogDisplay.parentElement.addEventListener('mouseout', growText);
+function growText(event) {
+  event.target.classList.toggle('hovered-display');
+}
+function copyToClipboard(elem) {
+  const copiedBanner = document.querySelector('.copied-banner');
+  const text = elem.innerText;
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textArea);
+  copiedBanner.classList.add('copied-banner-anim');
+  copiedBanner.addEventListener('animationend', () => copiedBanner.classList.remove('copied-banner-anim'));
+}
+
