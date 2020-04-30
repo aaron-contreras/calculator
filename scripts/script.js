@@ -56,13 +56,13 @@ function updateDisplay(event) {
   }
 }
 
-function missingParentheses(openParentheses, closeParentheses) {
-  return openParentheses === -1 && closeParentheses !== -1 ||
-    openParentheses !== -1 && closeParentheses === -1;
+function missingParentheses(setOfParens) {
+  return setOfParens.lastOpen === -1 && setOfParens.firstClose !== -1 ||
+    setOfParens.lastOpen !== -1 && setOfParens.firstClose === -1;
 }
 
-function isLastOperation(openParentheses, closeParentheses) {
-  return openParentheses === -1 && closeParentheses === -1;
+function isLastOperation(setOfParens) {
+  return setOfParens.lastOpen === -1 && setOfParens.firstClose === -1;
 }
 
 const cleanOperation = function (string) {
@@ -100,30 +100,27 @@ const isNonOperand = element => nonOperands.includes(element);
 
 function calculateResult(stringOperation) {
   const operation = cleanOperation(stringOperation);
-  console.log(operation);
   while (operation.some(isNonOperand)) {
-    // const operationDelimiter = {
-    //   lastOpenParens: operation.lastIndexOf('('),
-    //   firstCloseParens: operation.indexOf(')'),
-    //   distance: lastOpenParens - firstCloseParens
-    // }
-    // console.log(operationDelimiter);
-    const lastOpenParens = operation.lastIndexOf('(');
-    const firstCloseParens = operation.indexOf(')');
-    const distance = firstCloseParens - lastOpenParens + 1;
-    if (missingParentheses(lastOpenParens, firstCloseParens)) {
+    const parens = {
+      lastOpen: operation.lastIndexOf('('),
+      firstClose: operation.indexOf(')'),
+    }
+
+    if (missingParentheses(parens)) {
       return "Fix unmatching brackets";
     }
-    if (isLastOperation(lastOpenParens, firstCloseParens)) {
+
+    if (isLastOperation(parens)) {
       return solve(buildOperation(operation));
     }
     const elementsToSolve = operation
-      .slice(lastOpenParens + 1, firstCloseParens);
-
+      .slice(parens.lastOpen + 1, parens.firstClose);
     const subOperation = buildOperation(elementsToSolve);
     const solution = solve(subOperation);
-    operation.splice(lastOpenParens, distance, solution);
+    const distance = parens.firstClose - parens.lastOpen + 1;
+    operation.splice(parens.lastOpen, distance, solution);
   }
+
   return operation;
 }
 
