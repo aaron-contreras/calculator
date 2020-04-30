@@ -16,6 +16,18 @@ function add(a, b) {
 function subtract(a, b) {
   return a - b;
 }
+const validOperators = {
+  '**': (a, b) => a ** b,
+  '*': (a, b) => a * b,
+  '/': (a, b) => {
+    if (+b === 0) {
+      return "How can someone split a pizza among no people?";
+    }
+    return  a / b;
+  },
+  '+': (a, b) => +a + +b,
+  '-': (a, b) => a - b
+}
 
 function operate(a, operator, b) {
   if (operator === '**') {
@@ -126,19 +138,18 @@ function calculateResult(stringOperation) {
 
 function solve(operation) {
   const pendingOperators = operator => {
-    return operator === '**' || operator === '*' || operator === '/' ||
-      operator === '+' || operator === '-';
+    return operator in validOperators;
   };
-  const operatorPriority = [
+  const operatorList = [
     ['**'],
     ['*', '/'],
     ['+', '-']
   ];
   const getHighestPriorityOperator = () => {
     let index = 0;
-    for (let i = 0; i < operatorPriority.length; i++) {
+    for (let i = 0; i < operatorList.length; i++) {
       index = operation.operators.findIndex(operator => {
-        return operatorPriority[i].includes(operator);
+        return operatorList[i].includes(operator);
       });
       if (index >= 0) return index;
     }
