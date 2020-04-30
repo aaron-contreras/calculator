@@ -3,7 +3,8 @@
   --min-dimensions: 250px;
   --max-dimensions: 600px;
   --border-color: #171219;
-  --highlight-color: #44E5E7;
+  /* --highlight-color: #44E5E7; */
+  --highlight-color: #CA7DF9;
   --highlight-font: black;
   --secondary-color: #C0FDFB;
   --border: 2px solid black;
@@ -58,6 +59,7 @@ main p {
   width: 90vw;
 }
 #calc-container {
+  position: relative;
   display: grid;
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(5, 1fr);
@@ -79,6 +81,7 @@ button {
   transition: 0.2s;
   outline: none;
   color: inherit;
+  font-weight: 700;
 }
 button:hover {
   transform: scale(1.05);
@@ -92,6 +95,10 @@ button.equals {
   background-color: var(--highlight-color); 
   font-size: 2em;
   color: rgba(0,0,0,0.8);
+}
+.hovered {
+  transform: scale(1.05);
+  background-color: white;
 }
 .utility-wrapper {
   display: flex;
@@ -116,16 +123,17 @@ button.equals {
   align-items: flex-end;
   font-size: 2em;
   cursor: pointer;
+  max-width: 100%;
 }
 .backlog {
   flex: 3;
-  background-color: #000000;
+  background-color: var(--border-color);
   font-weight: 300;
 }
 .result {
   flex: 2;
   border-top: 3px solid rgba(255,255,255,0.25);
-  background-color: #000000;
+  background-color: var(--border-color);
   font-weight: 600;
 }
 .display div {
@@ -149,7 +157,7 @@ button.equals {
   font-size: 0.60em;
 }
 div .hovered-display {
-  color: var(--highlight-color);
+  color: white;
 }
 footer {
   height: 50px;
@@ -167,9 +175,20 @@ main a {
   margin: 0;
   font-weight: bold;
 }
+.instructions {
+  font-size: 0.8em;
+  margin-bottom: 15px;
+}
+main p {
+  margin: 5px 0;
+  text-align: center;
+
+}
 a:hover {
   display: inline-block;
   transform: scale(1.05);
   color: black;
 }
-
+.git-highlight {
+  color: var(--highlight-color);
+}

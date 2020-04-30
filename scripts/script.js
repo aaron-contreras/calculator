@@ -29,7 +29,6 @@ const validOperators = {
   '+': (a, b) => +a + +b,
   '-': (a, b) => a - b
 }
-
 function operate(a, operator, b) {
   return validOperators[operator](a, b);
 }
@@ -41,6 +40,7 @@ nonOperators.forEach(button => {
 let operation = '';
 let result = '';
 const fixBracketsMessage = "Add missing parentheses";
+let equalClicked = false;
 function updateDisplay(event) {
   function showErrorMessage() {
     resultDisplay.style.fontSize = '16px';
@@ -58,7 +58,7 @@ function updateDisplay(event) {
       return;
     }
 
-    if (event.target.className === 'equals') {
+    if (event.target.getAttribute('data-symbol') === '=') {
       result = calculateResult(operation);
       console.log(result);
       if (typeof result == "string") {
@@ -70,6 +70,7 @@ function updateDisplay(event) {
         return;
       }
       else {
+        equalClicked = true;
         resultDisplay.style.fontSize = '';
       }
 
@@ -86,13 +87,17 @@ function updateDisplay(event) {
       return;
     }
     if (event.target.className.includes('delete')) {
+      if (typeof result === "number") {
+        return;
+      }
+
       operation = operation.slice(0, operation.length - 1);
-      resultDisplay.style.fontSize = '';
       if (result === divisionByZeroMessage) {
         result = operation;
         resultDisplay.textContent = result;
         return;
       }
+      console.log(result);
       result = result.slice(0, result.length - 1);
       resultDisplay.textContent = operation;
       return;
@@ -230,7 +235,34 @@ function solve(operation) {
   return operation.operands[0];
 }
 
+document.querySelectorAll('.digit').forEach(digit => {
+  digit.setAttribute('data-symbol', `${digit.textContent}`);
+});
+window.addEventListener('keydown', (event) => {
+  const eventKeyName = event.key.toLowerCase();
+  let clickedButton = null;
+  function getElementWithSymbol(name) {
+    return document.querySelector(`[data-symbol="${name}"]`);
+  }
+  clickedButton = getElementWithSymbol(eventKeyName);
+  if (eventKeyName === '^') {
+    clickedButton = document.querySelector(`[data-symbol="**"]`);
+  } else if (eventKeyName === 'enter') {
+    clickedButton = document.querySelector('[data-symbol="="]');
+  }
+  if (clickedButton) {
+    clickedButton.classList.add('hovered');
+    clickedButton.click();
+  }
 
+});
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => {
+  button.addEventListener('transitionend', event => {
+    event.target.classList.remove('hovered');
+  });
+});
 const resultDisplay = document.querySelector('.result p');
 const backlogDisplay = document.querySelector('.backlog p');
 const calculator = document.querySelector('#calc-container');
@@ -244,6 +276,7 @@ backlogDisplay.parentElement.addEventListener('mouseout', growText);
 function growText(event) {
   event.target.classList.toggle('hovered-display');
 }
+
 function copyToClipboard(elem) {
   const copiedBanner = document.querySelector('.copied-banner');
   const text = elem.innerText;
@@ -257,3 +290,10 @@ function copyToClipboard(elem) {
   copiedBanner.addEventListener('animationend', () => copiedBanner.classList.remove('copied-banner-anim'));
 }
 
+const footerAnchor = document.querySelector('footer a');
+function highlightGitLogo(event) {
+  event.currentTarget.firstElementChild.classList.toggle('git-highlight');
+}
+
+footerAnchor.addEventListener('mouseover', highlightGitLogo);
+footerAnchor.addEventListener('mouseout', highlightGitLogo); 

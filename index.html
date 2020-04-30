@@ -5,7 +5,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="./styles/main.css" type="text/css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Oswald:wght@300;400;600&display=swap"
+    rel="stylesheet">
   <script src="https://kit.fontawesome.com/b4937b662a.js" crossorigin="anonymous"></script>
 </head>
 
@@ -14,7 +16,14 @@
     <p>Copied to clipboard.</p>
   </div>
   <main>
-    <p>This calculator uses <a href="https://en.wikipedia.org/wiki/Order_of_operations#Examples" target="_blank">PEMDAS</a> rules for order of operations. Make sure to wrap negative numbers in parentheses.</p>
+    <div class="instructions">
+
+      <p>This calculator uses <a href="https://en.wikipedia.org/wiki/Order_of_operations#Examples"
+          target="_blank">PEMDAS</a> rules for <em>order of operations</em>.
+      </p>
+      <p>Make sure to wrap <em>negative numbers</em> in parentheses.</p>
+      <p><strong>Click</strong> on your answer or operation to <strong>save</strong> it.</p>
+    </div>
     <div id="calc-container">
       <div class="display">
         <div class="sub backlog">
@@ -25,10 +34,10 @@
         </div>
       </div>
       <div class="utility-wrapper">
-        <button class="utility delete">
+        <button class="utility delete" data-symbol="backspace">
           <i class="fas fa-backspace"></i>
         </button>
-        <button class="utility clear">Clear</button>
+        <button class="utility clear" data-symbol="c">Clear</button>
       </div>
       <button class="non-operator digit">7</button>
       <button class="non-operator digit">8</button>
@@ -46,13 +55,13 @@
       <button class="operator" data-symbol="+">+</button>
       <button class="operator" data-symbol="-">-</button>
       <button class="non-operator digit">0</button>
-      <button class="non-operator dot">.</button>
+      <button class="non-operator dot" data-symbol=".">.</button>
       <button class="operator" data-symbol="**">Exp</button>
-      <button class="equals">=</button>
+      <button class="equals" data-symbol="=">=</button>
     </div>
   </main>
   <footer>
-    <a href="https://github.com/aaron-conteras">
+    <a href="https://github.com/aaron-conteras" target="_blank">
       Built by Aaron Conteras <i class="fab fa-github"></i>
     </a>
   </footer>
