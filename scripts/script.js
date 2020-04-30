@@ -39,29 +39,36 @@ nonOperators.forEach(button => {
 });
 
 let operation = '';
-let openedParensNum = 0;
-let closedParensNum = 0;
-let currentSolution = '';
+let result = '';
 function updateDisplay(event) {
   if (event.target.nodeName.toLowerCase() === 'button') {
-    if (event.target.className === 'clear') {
-
+    if (event.target.className.includes('clear')) {
+      operation = ''; 
+      resultDisplay.textContent = '0';
+      backlogDisplay.textContent = '';
+      result = '';
+      return;
     }
     if (event.target.className === 'equals') {
-      resultDisplay.textContent = calculateResult(operation);
+      result = calculateResult(operation);
+      if (result !== Math.trunc(result)) {
+        result = result.toFixed(5);
+      }
+      resultDisplay.textContent = result;
       operation = '(' + operation + ')';
       backlogDisplay.textContent = operation;
       return;
     }
-    if (event.target.id === 'delete') {
+    if (event.target.className.includes('delete')) {
       operation = operation.slice(0, operation.length - 1);
-      console.log(operation);
+      result = result.slice(0, result.length - 1); 
       resultDisplay.textContent = operation;
       return;
     }
 
     operation += event.target.getAttribute('data-symbol');
-    resultDisplay.textContent = operation;
+    result += event.target.getAttribute('data-symbol');
+    resultDisplay.textContent = result;
   }
 }
 
