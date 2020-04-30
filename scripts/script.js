@@ -16,12 +16,13 @@ function add(a, b) {
 function subtract(a, b) {
   return a - b;
 }
+const divisionByZeroMessage = "How can someone split a pizza among no people?";
 const validOperators = {
   '**': (a, b) => a ** b,
   '*': (a, b) => a * b,
   '/': (a, b) => {
     if (+b === 0) {
-      return "How can someone split a pizza among no people?";
+      return divisionByZeroMessage;
     }
     return  a / b;
   },
@@ -30,17 +31,7 @@ const validOperators = {
 }
 
 function operate(a, operator, b) {
-  if (operator === '**') {
-    return exponent(a, b);
-  } else if (operator === '+') {
-    return add(a, b);
-  } else if (operator === '-') {
-    return subtract(a, b);
-  } else if (operator === '*') {
-    return multiply(a, b);
-  } else {
-    return divide(a, b);
-  }
+  return validOperators[operator](a, b); 
 }
 const nonOperators = document.querySelectorAll('.non-operator');
 nonOperators.forEach(button => {
@@ -69,12 +60,12 @@ function updateDisplay(event) {
 }
 
 function missingParentheses(setOfParens) {
-  return setOfParens.lastOpen === -1 && setOfParens.firstClose !== -1 ||
-    setOfParens.lastOpen !== -1 && setOfParens.firstClose === -1;
+  return setOfParens.lastOpen === -1 && setOfParens.firstCloseAfterLastOpen !== -1 ||
+    setOfParens.lastOpen !== -1 && setOfParens.firstCloseAfterLastOpen === -1;
 }
 
 function isLastOperation(setOfParens) {
-  return setOfParens.lastOpen === -1 && setOfParens.firstClose === -1;
+  return setOfParens.lastOpen === -1 && setOfParens.firstCloseAfterLastOpen === -1;
 }
 
 const cleanOperation = function (string) {
@@ -112,10 +103,11 @@ const isNonOperand = element => nonOperands.includes(element);
 
 function calculateResult(stringOperation) {
   const operation = cleanOperation(stringOperation);
+  console.log(operation);
   while (operation.some(isNonOperand)) {
     const parens = {
       lastOpen: operation.lastIndexOf('('),
-      firstClose: operation.indexOf(')'),
+      firstCloseAfterLastOpen: operation.indexOf(')', operation.lastIndexOf('(')),
     }
 
     if (missingParentheses(parens)) {
@@ -126,10 +118,13 @@ function calculateResult(stringOperation) {
       return solve(buildOperation(operation));
     }
     const elementsToSolve = operation
-      .slice(parens.lastOpen + 1, parens.firstClose);
+      .slice(parens.lastOpen + 1, parens.firstCloseAfterLastOpen);
     const subOperation = buildOperation(elementsToSolve);
     const solution = solve(subOperation);
-    const distance = parens.firstClose - parens.lastOpen + 1;
+    if (solution === divisionByZeroMessage) {
+      return solution;
+    }
+    const distance = parens.firstCloseAfterLastOpen - parens.lastOpen + 1;
     operation.splice(parens.lastOpen, distance, solution);
   }
 
@@ -161,6 +156,9 @@ function solve(operation) {
     const a = operation.operands[index];
     const b = operation.operands[index + 1];
     const result = operate(a, operator, b);
+    if (result === divisionByZeroMessage) {
+      return result;
+    }
     operation.operands.splice(index, 2, result);
     operation.operators.splice(index, 1);
   }
