@@ -1,37 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./styles/main.css" type="text/css" />
-  </head>
-  <body>
-    <div id="calc-container">
-      <div class="display">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="./styles/main.css" type="text/css" />
+</head>
+
+<body>
+  <div id="calc-container">
+    <div class="display">
+      <div class="backlog">
+        <p></p>
+      </div>
+      <div class="result">
         <p>000000</p>
       </div>
-      <button class="non-operator parens">(</button>
-      <button class="non-operator parens">)</button>
-      <button class="operator" data-symbol="**">**</button>
-      <button class="utility">Clear All</button>
-      <button class="utility">Clear</button>
-      <button class="utility" id="delete">Delete</buton>
-      <button class="operator" data-symbol="/">/</button>
-      <button class="non-operator digit">7</button>
-      <button class="non-operator digit">8</button>
-      <button class="non-operator digit">9</button>
-      <button class="operator" data-symbol="*">X</button>
-      <button class="non-operator digit">4</button>
-      <button class="non-operator digit">5</button>
-      <button class="non-operator digit">6</button>
-      <button class="operator" data-symbol="-">-</button>
-      <button class="non-operator digit">1</button>
-      <button class="non-operator digit">2</button>
-      <button class="non-operator digit">3</button>
-      <button class="non-operator digit">0</button>
-      <button class="operator" data-symbol="+">+</button>
-      <button class="equals">=</button>
     </div>
-    <script src="./scripts/script.js"></script>
-  </body>
+    <div class="utility-wrapper">
+      <button class="utility" id="delete">Delete</button>
+      <button class="utility">Clear</button>
+    </div>
+    <button class="non-operator digit">7</button>
+    <button class="non-operator digit">8</button>
+    <button class="non-operator digit">9</button>
+    <button class="non-operator parens">(</button>
+    <button class="non-operator parens">)</button>
+    <button class="non-operator digit">4</button>
+    <button class="non-operator digit">5</button>
+    <button class="non-operator digit">6</button>
+    <button class="operator" data-symbol="*">X</button>
+    <button class="operator" data-symbol="/">/</button>
+    <button class="non-operator digit">1</button>
+    <button class="non-operator digit">2</button>
+    <button class="non-operator digit">3</button>
+    <button class="operator" data-symbol="+">+</button>
+    <button class="operator" data-symbol="-">-</button>
+    <button class="non-operator digit">0</button>
+    <button class="non-operator dot">.</button>
+    <button class="operator" data-symbol="**">Exp</button>
+    <button class="equals">=</button>
+  </div>
+  <script src="./scripts/script.js"></script>
+</body>
+
 </html>

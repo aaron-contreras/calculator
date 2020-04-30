@@ -41,21 +41,27 @@ nonOperators.forEach(button => {
 let operation = '';
 let openedParensNum = 0;
 let closedParensNum = 0;
+let currentSolution = '';
 function updateDisplay(event) {
   if (event.target.nodeName.toLowerCase() === 'button') {
+    if (event.target.className === 'clear') {
+
+    }
     if (event.target.className === 'equals') {
-      display.textContent = calculateResult(operation);
+      resultDisplay.textContent = calculateResult(operation);
+      operation = '(' + operation + ')';
+      backlogDisplay.textContent = operation;
       return;
     }
     if (event.target.id === 'delete') {
       operation = operation.slice(0, operation.length - 1);
       console.log(operation);
-      display.textContent = operation;
+      resultDisplay.textContent = operation;
       return;
     }
 
     operation += event.target.getAttribute('data-symbol');
-    display.textContent = operation;
+    resultDisplay.textContent = operation;
   }
 }
 
@@ -165,7 +171,7 @@ function solve(operation) {
   return operation.operands[0];
 }
 
-const display = document.querySelector('.display p');
-let blankState = true;
+const resultDisplay = document.querySelector('.result p');
+const backlogDisplay = document.querySelector('.backlog p');
 const calculator = document.querySelector('#calc-container');
 calculator.addEventListener('click', updateDisplay);
