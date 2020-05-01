@@ -1,21 +1,3 @@
-function exponent(a, b) {
-  return a ** b;
-}
-function multiply(a, b) {
-  return a * b;
-}
-
-function divide(a, b) {
-  return a / b;
-}
-
-function add(a, b) {
-  return +a + +b;
-}
-
-function subtract(a, b) {
-  return a - b;
-}
 const divisionByZeroMessage = "How can someone split a pizza among no people?";
 const validOperators = {
   '**': (a, b) => a ** b,
@@ -29,6 +11,7 @@ const validOperators = {
   '+': (a, b) => +a + +b,
   '-': (a, b) => a - b
 }
+
 function operate(a, operator, b) {
   return validOperators[operator](a, b);
 }
@@ -82,7 +65,6 @@ function updateDisplay(event) {
       if (result !== Math.trunc(result)) {
         result = result.toFixed(5);
       }
-      console.log('im here');
       resultDisplay.textContent = result;
       operation = '(' + operation + ')';
       backlogDisplay.textContent = operation;
@@ -99,7 +81,6 @@ function updateDisplay(event) {
         resultDisplay.textContent = result;
         return;
       }
-      // result = result.slice(0, result.length - 1);
       result = operation;
       resultDisplay.textContent = result;
       return;
@@ -154,7 +135,6 @@ const nonOperands = ['(', ')',
 
 const isNonOperand = element => nonOperands.includes(element);
 function validate(operation) {
-  console.log(operation);
   let previous = null;
   const errors = {
     hasMoreThanOneDecimal: false,
@@ -180,6 +160,7 @@ function validate(operation) {
   });
   return errors;
 }
+
 function calculateResult(stringOperation) {
   const operation = cleanOperation(stringOperation);
   const errorList = validate(operation);
@@ -205,6 +186,7 @@ function calculateResult(stringOperation) {
     if (isLastOperation(parens)) {
       return solve(buildOperation(operation));
     }
+
     const elementsToSolve = operation
       .slice(parens.lastOpen + 1, parens.firstCloseAfterLastOpen);
     const subOperation = buildOperation(elementsToSolve);
@@ -212,6 +194,7 @@ function calculateResult(stringOperation) {
     if (solution === divisionByZeroMessage) {
       return solution;
     }
+
     const distance = parens.firstCloseAfterLastOpen - parens.lastOpen + 1;
     operation.splice(parens.lastOpen, distance, solution);
   }
@@ -220,15 +203,14 @@ function calculateResult(stringOperation) {
 }
 
 function solve(operation) {
-  const pendingOperators = operator => {
-    return operator in validOperators;
-  };
+  const pendingOperators = operator => operator in validOperators;
   const operatorList = [
     ['**'],
     ['*', '/'],
     ['+', '-']
   ];
-  const getHighestPriorityOperator = () => {
+
+  function getHighestPriorityOperator() {
     let index = 0;
     for (let i = 0; i < operatorList.length; i++) {
       index = operation.operators.findIndex(operator => {
@@ -256,27 +238,37 @@ function solve(operation) {
   return operation.operands[0];
 }
 
-document.querySelectorAll('.digit').forEach(digit => {
-  digit.setAttribute('data-symbol', `${digit.textContent}`);
-});
-window.addEventListener('keydown', (event) => {
-  const eventKeyName = event.key.toLowerCase();
-  let clickedButton = null;
-  function getElementWithSymbol(name) {
-    return document.querySelector(`[data-symbol="${name}"]`);
-  }
-  clickedButton = getElementWithSymbol(eventKeyName);
-  if (eventKeyName === '^') {
-    clickedButton = document.querySelector(`[data-symbol="**"]`);
-  } else if (eventKeyName === 'enter') {
-    clickedButton = document.querySelector('[data-symbol="="]');
-  }
-  if (clickedButton) {
-    clickedButton.classList.add('hovered');
-    clickedButton.click();
-  }
+function addDataSymbolsToDigits() {
+  document.querySelectorAll('.digit').forEach(digit => {
+    digit.setAttribute('data-symbol', `${digit.textContent}`);
+  });
+}
 
-});
+addDataSymbolsToDigits();
+
+function addKeyboardSupport() {
+  window.addEventListener('keydown', (event) => {
+    const eventKeyName = event.key.toLowerCase();
+    let clickedButton = null;
+    function getElementWithSymbol(name) {
+      return document.querySelector(`[data-symbol="${name}"]`);
+    }
+    clickedButton = getElementWithSymbol(eventKeyName);
+    if (eventKeyName === '^') {
+      clickedButton = document.querySelector(`[data-symbol="**"]`);
+    } else if (eventKeyName === 'enter') {
+      clickedButton = document.querySelector('[data-symbol="="]');
+    }
+    if (clickedButton) {
+      console.log(clickedButton);
+      clickedButton.classList.add('hovered');
+      clickedButton.click();
+    }
+
+  });
+
+}
+addKeyboardSupport();
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => {
@@ -289,14 +281,16 @@ const backlogDisplay = document.querySelector('.backlog p');
 const calculator = document.querySelector('#calc-container');
 calculator.addEventListener('click', updateDisplay);
 
-const display = document.querySelector('.display');
+function growText(event) {
+  event.target.classList.toggle('hovered-display');
+}
+
 resultDisplay.parentElement.addEventListener('mouseover', growText);
 resultDisplay.parentElement.addEventListener('mouseout', growText);
 backlogDisplay.parentElement.addEventListener('mouseover', growText);
 backlogDisplay.parentElement.addEventListener('mouseout', growText);
-function growText(event) {
-  event.target.classList.toggle('hovered-display');
-}
+
+
 
 function copyToClipboard(elem) {
   const copiedBanner = document.querySelector('.copied-banner');
@@ -308,13 +302,7 @@ function copyToClipboard(elem) {
   document.execCommand('copy');
   document.body.removeChild(textArea);
   copiedBanner.classList.add('copied-banner-anim');
-  copiedBanner.addEventListener('animationend', () => copiedBanner.classList.remove('copied-banner-anim'));
+  copiedBanner.addEventListener('animationend', () => {
+    copiedBanner.classList.remove('copied-banner-anim')
+  });
 }
-
-const footerAnchor = document.querySelector('footer a');
-function highlightGitLogo(event) {
-  event.currentTarget.firstElementChild.classList.toggle('git-highlight');
-}
-
-footerAnchor.addEventListener('mouseover', highlightGitLogo);
-footerAnchor.addEventListener('mouseout', highlightGitLogo); 

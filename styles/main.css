@@ -218,6 +218,9 @@ a:hover {
   transform: scale(1.05);
   color: black;
 }
+a:hover i {
+  color: var(--highlight-color);
+}
 .git-highlight {
   color: var(--highlight-color);
 }
