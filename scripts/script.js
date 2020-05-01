@@ -40,7 +40,7 @@ nonOperators.forEach(button => {
 let operation = '';
 let result = '';
 const fixBracketsMessage = "Add missing parentheses";
-let equalClicked = false;
+let equalJustClicked = false;
 function updateDisplay(event) {
   function showErrorMessage() {
     resultDisplay.style.fontSize = '16px';
@@ -50,6 +50,7 @@ function updateDisplay(event) {
   }
   if (event.target.nodeName.toLowerCase() === 'button') {
     if (event.target.className.includes('clear')) {
+      equalJustClicked = false;
       resultDisplay.style.fontSize = '';
       operation = '';
       result = '';
@@ -59,7 +60,6 @@ function updateDisplay(event) {
     }
 
     if (event.target.getAttribute('data-symbol') === '=') {
-      
       result = calculateResult(operation);
       console.log(result);
       if (typeof result == "string") {
@@ -71,7 +71,6 @@ function updateDisplay(event) {
         return;
       }
       else {
-        equalClicked = true;
         resultDisplay.style.fontSize = '';
       }
 
@@ -83,6 +82,7 @@ function updateDisplay(event) {
       if (result !== Math.trunc(result)) {
         result = result.toFixed(5);
       }
+      console.log('im here');
       resultDisplay.textContent = result;
       operation = '(' + operation + ')';
       backlogDisplay.textContent = operation;
@@ -99,11 +99,11 @@ function updateDisplay(event) {
         resultDisplay.textContent = result;
         return;
       }
-      result = result.slice(0, result.length - 1);
+      // result = result.slice(0, result.length - 1);
+      result = operation;
       resultDisplay.textContent = result;
       return;
     }
-
     operation += event.target.getAttribute('data-symbol');
     result += event.target.getAttribute('data-symbol');
     resultDisplay.textContent = result;
@@ -153,24 +153,44 @@ const nonOperands = ['(', ')',
 ];
 
 const isNonOperand = element => nonOperands.includes(element);
-function hasMoreThanOneDecimalPoint(operation) {
+function validate(operation) {
+  console.log(operation);
   let previous = null;
-  let hasMoreThanOneDecimal = false;
+  const errors = {
+    hasMoreThanOneDecimal: false,
+    moreThanOnceConsecutiveOperator: false,
+    emptyOperator: false
+  };
+  if (operation[operation.length - 1] in validOperators) {
+    errors.emptyOperator = true;
+    return errors;
+  }
   operation.forEach(element => {
     if (previous) {
       if (typeof previous === "number" && typeof element === "number") {
-        hasMoreThanOneDecimal = true;
+        errors.hasMoreThanOneDecimal = true;
+        return;
+      }
+      if (previous in validOperators && element in validOperators) {
+        errors.moreThanOnceConsecutiveOperator = true;
         return;
       }
     }
     previous = element;
   });
-  return hasMoreThanOneDecimal;
+  return errors;
 }
 function calculateResult(stringOperation) {
   const operation = cleanOperation(stringOperation);
-  if (hasMoreThanOneDecimalPoint(operation)) {
-    return 'Invalid number of decimal points';
+  const errorList = validate(operation);
+  if (errorList.hasMoreThanOneDecimal) {
+    return 'There\'s more than one period in an operand';
+  }
+  if (errorList.moreThanOnceConsecutiveOperator) {
+    return 'There\'s more than one consecutive operator';
+  }
+  if (errorList.emptyOperator) {
+    return 'Operator at end of operation';
   }
   while (operation.some(isNonOperand)) {
     const parens = {

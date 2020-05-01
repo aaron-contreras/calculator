@@ -4,7 +4,7 @@
   --max-dimensions: 600px;
   --max-height: 300px;
   --border-color: #171219;
-  --font-size: 22px;
+  --font-size: 18px;
   /* --highlight-color: #44E5E7; */
   --highlight-color: #CA7DF9;
   --highlight-font: black;
@@ -61,18 +61,12 @@ main p {
   width: 90vw;
 }
 #calc-container {
-  position: relative;
   display: inline-grid;
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-rows: repeat(2, auto) repeat(5, 1fr);
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 1px;
   box-sizing: border-box;
-  /* width: var(--dimensions);
-  height: 60vh;
-  min-width: var(--min-dimensions);
-  min-height: var(--min-dimensions);*/
-  min-height: 60vh;
-  max-width: var(--max-dimensions);
+  max-width: 750px;
   color: #d3d3d6;
 }
 button {
@@ -118,7 +112,7 @@ button.equals {
 .display {
   color: rgba(255,255,255,0.8);
   grid-column: 1 / -1;
-  grid-row: span 3 / auto;
+  grid-row: span 2;
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
@@ -126,6 +120,9 @@ button.equals {
   font-size: 2em;
   cursor: pointer;
   max-width: 100%;
+}
+.display p {
+  margin: 0;
 }
 .backlog {
   padding: 0 15px;
@@ -135,7 +132,7 @@ button.equals {
   font-weight: 300;
 }
 .result {
-  padding: 0 15px;
+  padding: 8px 15px;
   flex: 1;
   border-top: 3px solid rgba(255,255,255,0.25);
   background-color: var(--border-color);
@@ -180,14 +177,39 @@ main a {
   margin: 0;
   font-weight: bold;
 }
-.instructions {
-  font-size: 0.8em;
-  margin-bottom: 15px;
+.tooltip {
+  position: absolute; 
+  top: 15px;
+  left: 15px;
+  display: inline;
 }
-main p {
-  margin: 5px 0;
+.instructions {
+  visibility: hidden;
+  top: 100%;
+  left: 100%;
+  width: 50vw;
+  transform: scale(0);
+  transform-origin: top left;
+  border-radius: 10px;
+  padding: 10px;
+  position: absolute;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: 1.5em;
   text-align: center;
-
+  z-index: 1;
+  background-color: #FFE74C;
+  transition: 0.25s;
+  opacity: 0;
+}
+.instructions a {
+  margin: 0;
+  font-weight: bold;
+}
+.tooltip:hover .instructions {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
 }
 a:hover {
   display: inline-block;
