@@ -182,6 +182,7 @@ main a {
   top: 15px;
   left: 15px;
   display: inline;
+  font-size: 1.5em;
 }
 .instructions {
   visibility: hidden;
@@ -193,7 +194,7 @@ main a {
   border-radius: 10px;
   padding: 10px;
   position: absolute;
-  font-size: inherit;
+  font-size: var(--font-size);
   font-weight: 400;
   line-height: 1.5em;
   text-align: center;
