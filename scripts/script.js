@@ -59,6 +59,7 @@ function updateDisplay(event) {
     }
 
     if (event.target.getAttribute('data-symbol') === '=') {
+      
       result = calculateResult(operation);
       console.log(result);
       if (typeof result == "string") {
@@ -75,6 +76,7 @@ function updateDisplay(event) {
       }
 
       if (typeof result === "object") {
+        resultDisplay.textContent = result;
         return;
 
       }
@@ -97,9 +99,8 @@ function updateDisplay(event) {
         resultDisplay.textContent = result;
         return;
       }
-      console.log(result);
       result = result.slice(0, result.length - 1);
-      resultDisplay.textContent = operation;
+      resultDisplay.textContent = result;
       return;
     }
 

@@ -2,7 +2,9 @@
   --dimensions: 50vw;
   --min-dimensions: 250px;
   --max-dimensions: 600px;
+  --max-height: 300px;
   --border-color: #171219;
+  --font-size: 22px;
   /* --highlight-color: #44E5E7; */
   --highlight-color: #CA7DF9;
   --highlight-font: black;
@@ -15,7 +17,7 @@ body {
   justify-content: space-between;
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
-  font-size: 22px;
+  font-size: var(--font-size);
   background-color: #FCFCFC;
   margin: 0;
 }
@@ -60,17 +62,17 @@ main p {
 }
 #calc-container {
   position: relative;
-  display: grid;
+  display: inline-grid;
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 1px;
   box-sizing: border-box;
-  width: var(--dimensions);
+  /* width: var(--dimensions);
   height: 60vh;
   min-width: var(--min-dimensions);
-  min-height: var(--min-dimensions);
+  min-height: var(--min-dimensions);*/
+  min-height: 60vh;
   max-width: var(--max-dimensions);
-  max-height: var(--max-dimensions);
   color: #d3d3d6;
 }
 button {
@@ -116,22 +118,25 @@ button.equals {
 .display {
   color: rgba(255,255,255,0.8);
   grid-column: 1 / -1;
-  grid-row: span 3;
-  display: flex;
+  grid-row: span 3 / auto;
+  display: inline-flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-end;
   font-size: 2em;
   cursor: pointer;
   max-width: 100%;
 }
 .backlog {
-  flex: 3;
+  padding: 0 15px;
+  flex: 1;
+  min-height: 3em;
   background-color: var(--border-color);
   font-weight: 300;
 }
 .result {
-  flex: 2;
+  padding: 0 15px;
+  flex: 1;
   border-top: 3px solid rgba(255,255,255,0.25);
   background-color: var(--border-color);
   font-weight: 600;
@@ -149,7 +154,6 @@ button.equals {
   overflow-wrap: break-word;
   word-wrap: break-word;
   text-align: right;
-  margin: 0 15px 0 0;
   transition: 0.1s;
 }
 
@@ -161,6 +165,7 @@ div .hovered-display {
 }
 footer {
   height: 50px;
+  padding: 10px 0;
   background-color: rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
@@ -191,4 +196,9 @@ a:hover {
 }
 .git-highlight {
   color: var(--highlight-color);
+}
+@media (max-width: 500px) {
+  #calc-container {
+    width: 100%; 
+  }
 }
