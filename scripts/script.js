@@ -25,6 +25,7 @@ let result = '';
 const fixBracketsMessage = "Add missing parentheses";
 let equalJustClicked = false;
 function updateDisplay(event) {
+  event.preventDefault();
   function showErrorMessage() {
     resultDisplay.style.fontSize = '16px';
     resultDisplay.textContent = result;
