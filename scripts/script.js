@@ -27,6 +27,7 @@ let equalJustClicked = false;
 function updateDisplay(event) {
   event.preventDefault();
   function showErrorMessage() {
+    event.preventDefault();
     resultDisplay.style.fontSize = '16px';
     resultDisplay.textContent = result;
     result = operation;
