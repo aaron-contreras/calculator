@@ -4,7 +4,8 @@
   --max-dimensions: 600px;
   --max-height: 300px;
   --border-color: #1E212B;
-  --border-color-darker: rgb(16, 17, 22); 
+  --border-color-faded: rgba(30, 33, 43, 0.849);
+  --border-color-darker: rgba(0,0,0,0.1);
   --font-size: 18px;
   --highlight-color: #1E212B;
   --highlight-color: rgba(255,33,52,1);
@@ -84,6 +85,7 @@ main p {
   box-sizing: border-box;
   max-width: 750px;
   color: #d3d3d6;
+  background-color: var(--border-color-darker);
   /* -webkit-box-shadow: 0px 0px 35px 9px rgba(0,0,0,1);
   -moz-box-shadow: 0px 0px 35px 9px rgba(0,0,0,1);
   box-shadow: 0px 0px 35px 9px rgba(0,0,0,1); */
@@ -204,10 +206,12 @@ div .hovered-display {
 footer {
   height: 50px;
   padding: 10px 0;
-  background-color: rgba(0,0,0,0.1);
-  background-color: #333;
   display: flex;
   align-items: center;
+}
+
+footer > a {
+  color: #ccc;
 }
 a {
   margin-left: 20px;
@@ -234,17 +238,21 @@ main a {
   max-width: 400px;
   transform: scale(0);
   transform-origin: top left;
-  border-radius: 10px;
+  border-radius: 5px;
+  border-top-left-radius: 0px;
   padding: 10px;
   position: absolute;
   font-size: var(--font-size);
+  font-family: inherit;
   font-weight: 400;
   line-height: 1.5em;
   text-align: center;
   z-index: 1;
   background-color: #FFE74C;
+  background: var(--border-color-faded);
   transition: 0.25s;
   opacity: 0;
+  color: #ccc;
 }
 .instructions a {
   margin: 0;
