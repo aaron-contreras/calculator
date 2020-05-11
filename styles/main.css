@@ -4,8 +4,8 @@
   --max-dimensions: 600px;
   --max-height: 300px;
   --border-color: #171219;
+  --border-color-darker: #0e0b0f;
   --font-size: 18px;
-  /* --highlight-color: #44E5E7; */
   --highlight-color: #CA7DF9;
   --highlight-font: black;
   --secondary-color: #C0FDFB;
@@ -18,7 +18,7 @@ body {
   min-height: 100vh;
   font-family: 'Montserrat', sans-serif;
   font-size: var(--font-size);
-  background-color: #FCFCFC;
+  background: var(--border-color-darker);
   margin: 0;
 }
 .copied-banner {
@@ -68,6 +68,9 @@ main p {
   box-sizing: border-box;
   max-width: 750px;
   color: #d3d3d6;
+  -webkit-box-shadow: 0px 0px 35px 9px rgba(0,0,0,1);
+  -moz-box-shadow: 0px 0px 35px 9px rgba(0,0,0,1);
+  box-shadow: 0px 0px 35px 9px rgba(0,0,0,1);
 }
 button {
   background-color: var(--border-color);
@@ -91,6 +94,14 @@ button.equals {
   background-color: var(--highlight-color); 
   font-size: 2em;
   color: rgba(0,0,0,0.8);
+  background: rgba(255,0,136,1);
+  background: -moz-linear-gradient(left, rgba(255,0,136,1) 0%, rgba(255,33,52,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255,0,136,1)), color-stop(100%, rgba(255,33,52,1)));
+  background: -webkit-linear-gradient(left, rgba(255,0,136,1) 0%, rgba(255,33,52,1) 100%);
+  background: -o-linear-gradient(left, rgba(255,0,136,1) 0%, rgba(255,33,52,1) 100%);
+  background: -ms-linear-gradient(left, rgba(255,0,136,1) 0%, rgba(255,33,52,1) 100%);
+  background: linear-gradient(to right, rgba(255,0,136,1) 0%, rgba(255,33,52,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0088', endColorstr='#ff2134', GradientType=1 );
 }
 .hovered {
   transform: scale(1.05);
