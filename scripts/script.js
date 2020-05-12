@@ -46,7 +46,6 @@ function updateDisplay(event) {
 
     if (event.target.getAttribute('data-symbol') === '=') {
       result = calculateResult(operation);
-      console.log(result);
       if (typeof result == "string") {
         showErrorMessage();
         return;
@@ -65,7 +64,11 @@ function updateDisplay(event) {
 
       }
       if (result !== Math.trunc(result)) {
-        result = result.toFixed(5);
+        result = result.toPrecision();
+        const numericResult = parseFloat(result).toFixed(7);
+        if (result.length > numericResult.length) {
+          result = parseFloat(numericResult).toPrecision();
+        }
       }
       resultDisplay.textContent = result;
       operation = '(' + operation + ')';
@@ -262,13 +265,10 @@ function addKeyboardSupport() {
       clickedButton = document.querySelector('[data-symbol="="]');
     }
     if (clickedButton) {
-      console.log(clickedButton);
       clickedButton.classList.add('hovered');
       clickedButton.click();
     }
-
   });
-
 }
 addKeyboardSupport();
 
