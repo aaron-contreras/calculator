@@ -4,22 +4,22 @@
   --max-dimensions: 600px;
   --max-height: 300px;
   --border-color: #1E212B;
-  --border-color-faded: rgba(30, 33, 43, 0.849);
+  --border-color-lighter: rgba(255,255,255,0.5);
+  --border-color-faded: rgba(30, 33, 43, 0.950);
   --border-color-darker: rgba(0,0,0,0.1);
   --font-size: 18px;
-  --highlight-color: #1E212B;
-  --highlight-color: rgba(255,33,52,1);
   --highlight-color: rgba(255,0,102,1);
   --highlight-font: black;
   --secondary-color: #C0FDFB;
   --border: 2px solid black;
+  --font: 'Montserrat', sans-serif;
 }
 body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 100vh;
-  font-family: 'Montserrat', sans-serif;
+  font-family: var(--font);
   font-size: var(--font-size);
   background: var(--border-color);
   margin: 0;
@@ -84,6 +84,7 @@ main p {
   grid-gap: 1px;
   box-sizing: border-box;
   max-width: 750px;
+  width: 90vw;
   color: #d3d3d6;
   background-color: var(--border-color-darker);
   -webkit-box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
@@ -102,9 +103,9 @@ button {
   font-weight: 700;
 }
 button:hover, .hovered {
-  transform: scale(1.05);
-  background-color: white;
-  color: var(--border-color);
+  transform: scale(1.1);
+  background-color: var(--border-color-darker);
+  color: white;
 }
 button:active {
   background-color: white;
@@ -124,10 +125,6 @@ button.equals {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0066', endColorstr='#ff2134', GradientType=1 );
 
 }
-/* .hovered {
-  transform: scale(1.05);
-  background-color: white;
-} */
 .utility-wrapper {
   display: flex;
   grid-column: 1 / -1;
@@ -188,24 +185,35 @@ button.equals {
 
 .backlog p {
   font-size: 0.60em;
+  letter-spacing: 0.1em;
 }
+
 div .hovered-display {
-  color: white;
+  animation-name: wave;
+  animation-duration: 0.9s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes wave {
+  20% {
+    transform: translateX(-5px);
+    color: white;
+  }
 }
 footer {
   height: 50px;
   padding: 10px 0;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
 }
 
 footer > a {
-  color: #ccc;
+  color: var(--border-color-lighter);
 }
 a {
-  margin-left: 20px;
+  margin-right: 20px;
   text-decoration: none;
-  color: #444;
   transition: 0.1s;
 }
 main a {
@@ -223,29 +231,36 @@ main a {
   visibility: hidden;
   top: 100%;
   left: 100%;
-  width: 50vw;
+  width: 75vw;
   max-width: 400px;
   transform: scale(0);
   transform-origin: top left;
-  border-radius: 5px;
+  border-radius: 10px;
   border-top-left-radius: 0px;
-  padding: 10px;
+  padding: 15px;
   position: absolute;
   font-size: var(--font-size);
-  font-family: inherit;
+  font-family: var(--font);
   font-weight: 400;
   line-height: 1.5em;
-  text-align: center;
   z-index: 1;
-  background-color: #FFE74C;
   background: var(--border-color-faded);
+  -webkit-box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
+  border: 2px solid rgba(0,0,0,0.25);
   transition: 0.25s;
   opacity: 0;
   color: #ccc;
 }
+.instruction-headline {
+  text-transform: uppercase;
+  text-align: center;
+}
 .instructions a {
   margin: 0;
   font-weight: bold;
+  color: #ccc;
 }
 .tooltip:hover .instructions {
   visibility: visible;
@@ -255,7 +270,6 @@ main a {
 a:hover {
   display: inline-block;
   transform: scale(1.05);
-  color: black;
 }
 a:hover i {
   color: var(--highlight-color);
@@ -264,8 +278,9 @@ a:hover i {
   color: var(--highlight-color);
 }
 @media (max-width: 500px) {
-  #calc-container {
-    width: 100%; 
+  .instructions {
+    max-width: 80vw;
+    width: calc(80vw - var(--font-size));
   }
   html {
     height: 100%;

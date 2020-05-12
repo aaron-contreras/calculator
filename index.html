@@ -4,33 +4,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Calc-oh!</title>
   <link rel="stylesheet" href="./styles/main.css" type="text/css" />
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Oswald:wght@300;400;600&display=swap"
     rel="stylesheet">
   <script src="https://kit.fontawesome.com/b4937b662a.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
   <header>
   <div class="copied-banner">
     <p>Copied to clipboard.</p>
   </div>
-
   <i class="tooltip fas fa-info-circle">
     <div class="instructions">
-
-      <p>This calculator uses <a href="https://en.wikipedia.org/wiki/Order_of_operations#Examples"
-          target="_blank">PEMDAS</a> rules for <em>order of operations</em>.
-      </p>
-      <p>You'll be appending or deleting on your previous operations until you clear. This allows to build up complex
-        operations.</p>
-      <p>Make sure to wrap <strong>negative numbers in parentheses</strong>.</p>
-      <p>You may use your keyboard.</p>
-      <p><strong>Click on your answer or operation to save it.</strong></p>
+      <p class="instruction-headline"><a href="https://en.wikipedia.org/wiki/Order_of_operations#Examples"
+          target="_blank">Works with PEMDAS rules.</a></p>
+      <p>Build up complex operations. You'll always append or delete on your previous operations until you clear.</p>
+      <p>Wrap <strong>negative numbers in parentheses</strong>.</p>
+      <p>Keyboard support.</p>
+      <p class="instruction-headline"><strong>Click on your results to save them.</strong></p>
     </div>
-
-
   </i>
 </header>
   <main>
@@ -44,7 +38,7 @@
         </div>
       </div>
       <div class="utility-wrapper">
-        <button class="utility delete" data-symbol="backspace">
+        <button class="utility delete" data-symbol="backspace" aria-label="backspace">
           <i class="fas fa-backspace"></i>
         </button>
         <button class="utility clear" data-symbol="c">Clear</button>

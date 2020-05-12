@@ -278,21 +278,21 @@ buttons.forEach(button => {
     event.target.classList.remove('hovered');
   });
 });
+
 const resultDisplay = document.querySelector('.result p');
 const backlogDisplay = document.querySelector('.backlog p');
 const calculator = document.querySelector('#calc-container');
 calculator.addEventListener('click', updateDisplay);
 
 function growText(event) {
-  event.target.classList.toggle('hovered-display');
+  const para = event.currentTarget.firstElementChild;
+  para.classList.toggle('hovered-display');
 }
 
 resultDisplay.parentElement.addEventListener('mouseover', growText);
 resultDisplay.parentElement.addEventListener('mouseout', growText);
 backlogDisplay.parentElement.addEventListener('mouseover', growText);
 backlogDisplay.parentElement.addEventListener('mouseout', growText);
-
-
 
 function copyToClipboard(elem) {
   const copiedBanner = document.querySelector('.copied-banner');
