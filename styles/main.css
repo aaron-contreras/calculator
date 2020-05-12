@@ -232,7 +232,7 @@ main a {
   top: 100%;
   left: 100%;
   width: 75vw;
-  max-width: 400px;
+  max-width: 500px;
   transform: scale(0);
   transform-origin: top left;
   border-radius: 10px;
@@ -248,19 +248,20 @@ main a {
   -webkit-box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
   -moz-box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
   box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.1);
-  border: 2px solid rgba(0,0,0,0.25);
+  border: 4px solid rgba(0,0,0,0.2);
   transition: 0.25s;
   opacity: 0;
   color: #ccc;
 }
 .instruction-headline {
-  text-transform: uppercase;
   text-align: center;
+  color: var(--highlight-color);
+  letter-spacing: 0.1em;
 }
 .instructions a {
   margin: 0;
   font-weight: bold;
-  color: #ccc;
+  color: var(--highlight-color);
 }
 .tooltip:hover .instructions {
   visibility: visible;
